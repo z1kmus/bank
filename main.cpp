@@ -1,88 +1,126 @@
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 #include <iomanip>
-#include <queue>
 using namespace std;
 
 class Bolim{
-	set<string> bolimlar = {"Kassa", "Hisob-kitob", "Kredit", "Depozit", "Valyuta ayirboshlash"};
-public:
+	set<string> bolimlar = {"Kredit", "Depozit", "Valyuta ayirboshlash", "Hisob-kitob", "Moliyaviy maslahat"};
+	
+	public:
 	Bolim(){}
+
+	void add(string bolim){
+		if(!bolimlar.count(bolim)){
+			bolimlar.insert(bolim);
+		}
+		else{
+			cout<<"Bunday bo'lim mavjud."<<endl;
+		}
+	}
 
 	void print(){
 		int i = 1;
 		cout<<"Bolimlar:"<<endl;
 		for(string b : bolimlar){
-			cout<<setw(4)<<i<<". "<<b<<endl;
+			cout<<setw(3)<<i<<". "<<b<<endl;
 			i++;
 		}
 	}
 
-	map<string, int> getMap(){
-		map<string, int> mBolimlar;
-		int t = 1;
+	int getSize(){
+		return bolimlar.size();
+	}
+
+	map<int, string> getAsMap(){
+		map<int, string> result;
+		int i = 1;
 		for(string b : bolimlar){
-			mBolimlar[b] = t;
-			t++;
+			result[i] = b;
+			i++;
 		}
-		return mBolimlar;
+		return result;
 	}
 };
 
 class Client{
 	string name;
-	int bolim;
-public:
-	Client(string name, int bolim){
+	int bolim_id;
+	public:
+	Client(string name, int id){
 		this->name = name;
-		this->bolim = bolim;
+		this->bolim_id = id;
 	}
+
+	
 };
 
 class Bank{
-	queue<Client> dN;
-	queue<Client> hN;
-	queue<Client> kaN;
-	queue<Client> krN;
-	queue<Client> vN;
-	
+	Bolim bank;
+	vector<queue<Client>> navbat;
 	public:
-	Bank(){}
-
-	void add(string name, int bolim){
-		switch (bolim){
-		case 1:
-			dN.push(Client(name, bolim));
-			break;
-		case 2:
-			hN.push(Client(name, bolim));
-			break;
-		case 3:
-			kaN.push(Client(name, bolim));
-			break;
-		case 4:
-			krN.push(Client(name, bolim));
-			break;
-		case 5:
-			vN.push(Client(name, bolim));
-			break;
-		default:
-			break;
+	Bank(){
+		for(int i=0;i<10;i++){
+			navbat.push_back({});
 		}
 	}
+
+	void addClient(string name, int id){
+		navbat.at(id-1).push(Client(name, id));
+	}
+
+	void printBolim(){
+		bank.print();
+	}
+
+	void addBolim(string bolim){
+		bank.add(bolim);
+	}
+
+	
+	void getSize(){
+		cout<<navbat.size()<<endl;
+	}
+	void getInfo();
 };
 
-void printM(map<string, int> bolimlar){
-	for(auto bolim : bolimlar){
-		cout<<bolim.first<<setw(3)<<bolim.second<<endl;
-	}
-}
+
 
 int main(){
-	Bolim bank;
-	bank.print();
-	Bank agrobank;
-	agrobank.add("Mustafo", 1);
+	// Bolim bank;
+	// bank.add("Kassa");
+	// bank.print();
+	// cout<<endl;
+	Bank tbc;
+	tbc.addBolim("Kassa");
+	tbc.printBolim();
+	tbc.addClient("Mustafo", 1);
+	tbc.addClient("Mustafo", 3);
+	tbc.getInfo();
+
+
+	// while (true)1
+	// {
+	// 	bool sorov;
+	// 	cout<<"Navbatga yozilashni xohlaysizmi? (1/0): ";
+	// 	cin>>sorov;
+	// 	if(sorov){
+	// 		// string name; cout<<"Ism: "; getline(cin, name);
+	// 		// int id; cout<<"Bolim (index): "; cin>>id;
+	// 		tbc.addClient("Mustafo", 1);
+	// 	}
+	// 	else{
+	// 		break;
+	// 	}
+	// }
+	
+	
+	return 0;
+}
+
+void Bank::getInfo(){
+	int id = 0;
+		cout<<"Navbatlar: "<<endl;
+		for(auto b : bank.getAsMap()){
+			cout<<setw(3)<<id+1<<". "<<b.second<<": "<<navbat.at(id).size()<<endl;
+			id++;
+		}
 }
