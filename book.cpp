@@ -63,6 +63,7 @@ class Book{
 };
 class Bookshelf{
 	stack<Book> shelf;
+	map<int, string> dic;
 	vector<int> years;
 	public:
 	Bookshelf(){}
@@ -70,6 +71,7 @@ class Bookshelf{
 	void add(string name, string author, int year){
 		shelf.push(Book(name, author, year));
 		years.push_back(year);
+		dic[year] = name;
 	}
 	void printInfo(){
 		if(!shelf.empty()){
@@ -91,10 +93,8 @@ class Bookshelf{
 
 	void getByYear(){
 		quickSort(years, 0, years.size()-1);
-		for(int y: years){
-			for(int i=0;i<shelf.size();i++){
-				if(shelf.at(i).get)
-			}
+		for(int y : years){
+			cout<<y<<" "<<'"'<<dic.at(y)<<'"'<<endl;
 		}
 	}
 };
@@ -104,5 +104,5 @@ int main(){
 	a.add("To Live", "Yu Xua", 1993);
 	a.add("One Flew over the Cuckoos Nest", "Ken Kesey", 1965);
 	a.add("1984", "Jorg Oruel", 1948);
-	a.getByYear();
+	a.printInfo();
 }
